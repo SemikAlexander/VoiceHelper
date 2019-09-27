@@ -105,10 +105,10 @@ HelperSay("Кеша слушает")
 #Запуск программы
 r = sr.Recognizer()
 m = sr.Microphone(device_index = 2)	# active microphone index
-r.adjust_for_ambient_noise(source, duration = 1)
 
 while True:
 	with m as source:
 		print("Слушаю...")
+		r.adjust_for_ambient_noise(source, duration = 1)
 		audio = r.listen(source)
 	ListenUserVoice(r, audio)
