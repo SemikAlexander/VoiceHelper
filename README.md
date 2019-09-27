@@ -14,3 +14,11 @@ This voice assistant is written in Python using specialized libraries.
 2. [fuzzywuzzy](https://pypi.org/project/fuzzywuzzy/0.3.0/)
 3. [pyttsx3](https://pypi.org/project/pyttsx3/)
 4. [PyAudio](https://pypi.org/project/PyAudio/)
+
+This voice assistant functionality includes:
+- launching a browser (Google Chrome, Mozilla Firefox)
+- informing about the current time,
+- a story of a joke,
+- information about him.
+
+In the future, the functionality can be expanded.
