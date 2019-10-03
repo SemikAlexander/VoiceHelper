@@ -20,6 +20,9 @@ This voice assistant functionality includes:
 - launching a browser (Google Chrome, Mozilla Firefox)
 - informing about the current time,
 - a story of a joke,
-- information about him.
+- information about him,
+- launching explorer,
+- launching simple game,
+- open radio on web page
 
 In the future, the functionality can be expanded.
