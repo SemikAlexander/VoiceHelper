@@ -14,6 +14,7 @@ This voice assistant is written in Python using specialized libraries.
 2. [fuzzywuzzy](https://pypi.org/project/fuzzywuzzy/0.3.0/)
 3. [pyttsx3](https://pypi.org/project/pyttsx3/)
 4. [PyAudio](https://pypi.org/project/PyAudio/)
+5. [Программа RHVoice, дополнительные голоса для синтеза речи]: (https://howdyho.net/download/462)
 
 This voice assistant functionality includes:
 - launching a browser (Google Chrome, Mozilla Firefox)
