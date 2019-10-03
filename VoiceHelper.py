@@ -6,6 +6,7 @@ import pyttsx3
 import datetime
 import webbrowser
 import random
+import platform
 
 # настройки
 options = {
@@ -19,6 +20,7 @@ options = {
 		'info_about':('кто ты', 'что ты такое'),
 		"internet_chrome": ('запусти хром', 'открой хром', 'google chrome'),
 		"internet_firefox": ('запусти мозилу', 'открой мозилу', 'Mazilla Firefox'),
+		"game_start": ('игрушку','игру'),
 		"stupid1": ('расскажи анекдот','рассмеши меня','ты знаешь анекдоты'),
 		"excuse": ('ты такой медленный', 'тормознутый', 'медленный', 'тугодум'),
 		"goodbye": ('прощай','до свидания','до скорого','аривидерчи','пока')
@@ -77,9 +79,15 @@ def ExecuteCommand(cmd):
    
 	elif cmd == 'radio':
 		# воспроизвести радио
-		firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe %s'
-		webbrowser.get(firefox_path).open('https://pcradio.ru/')
 		HelperSay("Одну минуту")
+		try:
+			firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe %s'
+			webbrowser.get(firefox_path).open('https://pcradio.ru/')
+		except webbrowser.Error as errorFireFox:
+			try:
+				webbrowser.get(chrome_path).open('https://pcradio.ru/')
+			except webbrowser.Error as errorChrome:
+				print("Something go wrong...")
    
 	elif cmd == 'stupid1':
 		# рассказать анекдот
@@ -88,7 +96,6 @@ def ExecuteCommand(cmd):
 	elif cmd == 'internet_chrome':
 		# запустить google chrome
 		HelperSay("Запускаю Гугл Хром")
-		chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
 		webbrowser.get(chrome_path).open('https://www.google.com/')
 
 	elif cmd == 'internet_firefox':
@@ -101,12 +108,16 @@ def ExecuteCommand(cmd):
 		HelperSay("Открываю проводник")
 		os.system(f'start {os.path.realpath("C:/")}')
 
+	elif cmd == 'game_start':
+		HelperSay("Запускаю игру")
+		os.system(f'start RacerGame.py')
+
 	elif cmd == 'excuse':
 		HelperSay("Дело всё в том, что я, как Вам уже известно, а может быть и нет, написан на Питоне, а он не гарантирует высокую скорость обработки данных. Да и многое зависит от железа, которым Вы располагаете.")
 		HelperSay("Если хотите, чтобы я работал быстрее, попросите моего создателя меня переписать на тот же Си + +. Вот только, скорее всего, он вряд ли согласится.")
 	
 	elif cmd == 'info_about':
-		HelperSay("Я голосовой ассистент, который написан студентом на Питоне с использованием простых библиотек.")
+		HelperSay("Я голосовой ассистент, который написан студентом группы ПИ 16 а Сёмиком Александром на Python с использованием простых библиотек.")
 	
 	elif cmd == 'goodbye':
 		HelperSay("До свиданья!")
@@ -124,6 +135,14 @@ HelperSay("Добрый день, повелитель")
 HelperSay("Кеша слушает")
 
 #Запуск программы
+
+if platform.system() == 'Linux':
+	chrome_path = '/usr/bin/google-chrome %s'
+elif platform.system() == 'Windows':
+	chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+else:
+	chrome_path = 'open -a /Applications/Google\ Chrome.app %s'		#MacOS has name "Darwin"
+
 r = sr.Recognizer()
 m = sr.Microphone(device_index = 2)	# active microphone index
 
