@@ -8,17 +8,20 @@ import webbrowser
 import random
 
 # настройки
-opts = {
+options = {
 	"alias": ('кеша','кеш','инокентий','иннокентий','кишун','киш',
 			  'кишаня','кяш','кяша','кэш','кэша'),
 	"tbr": ('скажи','расскажи','покажи','сколько','произнеси', 'запусти', 'открой'),
 	"cmds": {
 		"ctime": ('текущее время','сейчас времени','который час', 'сколько времени'),
 		"radio": ('включи музыку','воспроизведи радио','включи радио'),
-		'info_about':('кто ты', 'что ты такое', 'как тебя зовут'),
+		"explorer": ('мой компьютер', 'проводник'),
+		'info_about':('кто ты', 'что ты такое'),
 		"internet_chrome": ('запусти хром', 'открой хром', 'google chrome'),
 		"internet_firefox": ('запусти мозилу', 'открой мозилу', 'Mazilla Firefox'),
-		"stupid1": ('расскажи анекдот','рассмеши меня','ты знаешь анекдоты')
+		"stupid1": ('расскажи анекдот','рассмеши меня','ты знаешь анекдоты'),
+		"excuse": ('ты такой медленный', 'тормознутый', 'медленный', 'тугодум'),
+		"goodbye": ('прощай','до свидания','до скорого','аривидерчи','пока')
 	}
 }
 
@@ -34,11 +37,11 @@ def ListenUserVoice(recognizer, audio):
 	try:
 		voice = recognizer.recognize_google(audio, language = "ru-RU").lower()
 		print("Распознано: " + voice)
-		if voice.startswith(opts["alias"]):	#обращение к помошнику
+		if voice.startswith(options["alias"]):	#обращение к помошнику
 			cmd = voice
-			for i in opts['alias']:
+			for i in options['alias']:
 				cmd = cmd.replace(i, "").strip()
-			for i in opts['tbr']:
+			for i in options['tbr']:
 				cmd = cmd.replace(i, "").strip()
 			
 			cmd = RecognizeCommand(cmd)
@@ -52,7 +55,7 @@ def ListenUserVoice(recognizer, audio):
 
 def RecognizeCommand(cmd):
 	RC = {'cmd': '', 'percent': 0}
-	for c, v in opts['cmds'].items():
+	for c, v in options['cmds'].items():
 		for x in v:
 			vrt = fuzz.ratio(cmd, x)
 			if vrt > RC['percent']:
@@ -74,7 +77,9 @@ def ExecuteCommand(cmd):
    
 	elif cmd == 'radio':
 		# воспроизвести радио
-		os.system("D:\\Jarvis\\res\\radio_record.m3u")
+		firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe %s'
+		webbrowser.get(firefox_path).open('https://pcradio.ru/')
+		HelperSay("Одну минуту")
    
 	elif cmd == 'stupid1':
 		# рассказать анекдот
@@ -88,16 +93,32 @@ def ExecuteCommand(cmd):
 
 	elif cmd == 'internet_firefox':
 		# запустить firefox
-		HelperSay("Запускаю Firefox")
+		HelperSay("Запускаю Мозилу")
 		firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe %s'
 		webbrowser.get(firefox_path).open('https://www.google.com/')
+	
+	elif cmd == 'explorer':
+		HelperSay("Открываю проводник")
+		os.system(f'start {os.path.realpath("C:/")}')
 
+	elif cmd == 'excuse':
+		HelperSay("Дело всё в том, что я, как Вам уже известно, а может быть и нет, написан на Питоне, а он не гарантирует высокую скорость обработки данных. Да и многое зависит от железа, которым Вы располагаете.")
+		HelperSay("Если хотите, чтобы я работал быстрее, попросите моего создателя меня переписать на тот же Си + +. Вот только, скорее всего, он вряд ли согласится.")
+	
 	elif cmd == 'info_about':
-		HelperSay("Я голосовой ассистент, который написан студентом группы ПИ 16 а Сёмиком Александром на Python с использованием простых библиотек.")
+		HelperSay("Я голосовой ассистент, который написан студентом на Питоне с использованием простых библиотек.")
+	
+	elif cmd == 'goodbye':
+		HelperSay("До свиданья!")
+		os.abort()
+	
 	else:
 		print('Команда не распознана, повторите!')
 
 speak_engine = pyttsx3.init()
+
+voices = speak_engine.getProperty('voices')
+speak_engine.setProperty('voice', voices[3].id)
 
 HelperSay("Добрый день, повелитель")
 HelperSay("Кеша слушает")
