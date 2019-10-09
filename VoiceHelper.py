@@ -18,12 +18,13 @@ options = {
 		"radio": ('включи музыку','воспроизведи радио','включи радио'),
 		"explorer": ('мой компьютер', 'проводник'),
 		'info_about':('кто ты', 'что ты такое'),
-		"internet_chrome": ('запусти хром', 'открой хром', 'google chrome'),
-		"internet_firefox": ('запусти мозилу', 'открой мозилу', 'Mazilla Firefox'),
+		"internet_chrome": ('хром', 'google chrome'),
+		"internet_firefox": ('мозилу', 'Firefox', 'Mazilla Firefox'),
 		"game_start": ('игрушку','игру'),
 		"stupid1": ('расскажи анекдот','рассмеши меня','ты знаешь анекдоты'),
 		"excuse": ('ты такой медленный', 'тормознутый', 'медленный', 'тугодум'),
 		"user_help": ('что ты можешь', 'что ты умеешь'),
+		"user_settings": ('пользовательские настройки','настройки'),
 		"goodbye": ('прощай','до свидания','до скорого','аривидерчи','пока')
 	}
 }
@@ -65,6 +66,42 @@ def RecognizeCommand(cmd):
 				RC['cmd'] = c
 				RC['percent'] = vrt
 	return RC
+
+def UserSettings():
+	if platform.system() == 'Windows':
+		os.system('cls')  # For Windows
+	else:
+		os.system('clear')  # For Linux/OS X
+	loop = True 
+	while loop:          ## While loop which will keep going until loop = False
+		print (30 * "-" , "MENU" , 30 * "-")
+		print ("1. Изменить имя пользователя")
+		print ("2. Изменить голос ассистента")
+		print ("3. Изменить устройство ввода")
+		print ("4. Указать путь к пользовательской игре")
+		print ("5. Exit")
+		print (67 * "-")    ## Displays menu
+		choice = input("Enter your choice [1-5]: ")
+		
+		if choice==1:     
+			print("Menu 1 has been selected")
+			## You can add your code or functions here
+		elif choice==2:
+			print("Menu 2 has been selected")
+			## You can add your code or functions here
+		elif choice==3:
+			print("Menu 3 has been selected")
+			## You can add your code or functions here
+		elif choice==4:
+			print("Menu 4 has been selected")
+			## You can add your code or functions here
+		elif choice==5:
+			print("Menu 5 has been selected")
+			## You can add your code or functions here
+			loop = False # This will make the while loop to end as not value of loop is set to False
+		else:
+			# Any integer inputs other than values 1-5 we print an error message
+			print("Wrong option selection. Enter any key to try again..")
 
 def GetJocke():
 	file = open('Jockes.txt', 'r', encoding='utf-8')
@@ -124,6 +161,10 @@ def ExecuteCommand(cmd):
 		HelperSay("Управление максимально простое. Вы просто обращаетесь ко мне по имени а потом говорите команду и я её выполняю. Вот список того, что я могу: ")
 		print("Сказать время\n Рассказать анекдот\n Запустить Google Chrome или Firefox\n Открыть проводник\n Запустить веб радио\n Запустить встроенную игру")
 	
+	elif cmd == 'user_settings':
+		HelperSay("Открываю настройки")
+		UserSettings()
+
 	elif cmd == 'goodbye':
 		HelperSay("До свиданья!")
 		os.abort()
@@ -154,6 +195,6 @@ m = sr.Microphone(device_index = 2)	# active microphone index
 while True:
 	with m as source:
 		print("Слушаю...")
-		r.adjust_for_ambient_noise(source, duration = 1)
+		r.adjust_for_ambient_noise(source, duration = 0.1)
 		audio = r.listen(source)
 	ListenUserVoice(r, audio)
